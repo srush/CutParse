@@ -1,5 +1,3 @@
-
-
 import os
 debug = ARGUMENTS.get('debug', 1)
 profile = ARGUMENTS.get('profile', 0)
@@ -15,13 +13,12 @@ else:
                     CCFLAGS = '-O3  -DNDEBUG',
                     LINKFLAGS = '-O3  -DNDEBUG')
 
-sources = ["LPBuilder.cpp"]
-libs = ["gurobi_g++4.1", "gurobi40", "dstruct", "pthread", "m", "stdc++"]
-  
+sources = ["EisnerToHypergraph.cpp", "hypergraph.pb.cc", "features.pb.cc"]
+sources2 = ["Viterbi.cpp", "hypergraph.pb.cc", "features.pb.cc"]
+libs = ["pthread", "protobuf", "hypergraph"]
   
 #SConscript(dirs=['hypergraph', 'lattice'], exports=['env'])
-  
-env.Program('parsecutlp', sources ,
-            LIBS = libs, LIBPATH= [os.environ['GUROBI_HOME']+'/lib'],
-            CPPPATH = ['.', os.environ['GUROBI_HOME']+'/include'])
-               
+                                
+env.Program('convert', sources, LIBS = libs, LIBPATH= ['.', '/home/srush/Projects/relax_decode/hypergraph'], CPPPATH = ['.'])
+env.Program('viterbi', sources2, LIBS = libs, LIBPATH= ['.', '/home/srush/Projects/relax_decode/hypergraph'], CPPPATH = ['.', '/home/srush/Projects/transforest/svector/',  '/home/srush/Projects/hypergraph/gen_cpp/', '/home/srush/Projects/relax_decode/hypergraph'])
+
